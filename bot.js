@@ -1,6 +1,8 @@
 // Imports
+const fs = require("fs");
 const Discord = require("discord.js");
 const { prefix, token, owner } = require("./config.json");
+const { BOT_STATUS } = require("./kacc_constants.json");
 
 
 // Setup
@@ -8,13 +10,13 @@ const client = new Discord.Client();
 
 // File setup
 if (!fs.existsSync("./storage")) fs.mkdirSync("./storage");
-if (!fs.existsSync("./storage/tracking.json")) {
+/*if (!fs.existsSync("./storage/members.json")) {
   fs.writeFileSync(
-    "./storage/tracking.json",
+    "./storage/members.json",
     JSON.stringify({ projects: [], easyNum: 100 }),
     "utf8"
   );
-}
+}*/
 
 // Command/cooldown setup
 client.commands = new Discord.Collection();
@@ -28,7 +30,7 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 client.on("ready", () => {
-  client.user.setActivity("Test");
+  client.user.setActivity(BOT_STATUS);
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
