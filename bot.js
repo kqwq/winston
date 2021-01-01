@@ -3,7 +3,9 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const { prefix, token, owner } = require("./config.json");
 const { BOT_STATUS } = require("./kacc_constants.json");
-const modmail = require("./util/modmail.js")
+const modmail = require("./util/modmail.js");
+const Sequelize = require('sequelize');
+
 
 // Setup
 const client = new Discord.Client();
@@ -18,6 +20,31 @@ if (!fs.existsSync("./storage")) fs.mkdirSync("./storage");
   );
 }*/
 
+// SQL setup
+const sequelize = new Sequelize('database', 'user', 'password', {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	// SQLite only
+	storage: './storage/database.sqlite',
+});
+const Tags = sequelize.define('tags', {
+	discordid: {
+		type: Sequelize.STRING,
+		unique: true,
+  },
+  kaid: {
+		type: Sequelize.STRING,
+		unique: true,
+	},
+	date_verified: Sequelize.DATE,
+	tracking_id: {
+		type: Sequelize.INTEGER,
+		defaultValue: 0,
+		allowNull: false,
+	},
+});
+
 // Command/cooldown setup
 client.commands = new Discord.Collection();
 const commandFiles = fs
@@ -30,6 +57,7 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 client.on("ready", () => {
+  Tags.sync();
   client.user.setActivity(BOT_STATUS);
   console.log(`Logged in as ${client.user.tag}!`);
 });

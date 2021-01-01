@@ -62,7 +62,7 @@ module.exports = {
       let embed = {
         embed: {
           title: "Hotlist",
-          color: 0xeb406a,
+          color: PRIMARY_COLOR,
           fields: fields,
         },
       };

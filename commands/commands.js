@@ -20,7 +20,7 @@ module.exports = {
         description: helpStr,
         color: PRIMARY_COLOR,
         footer: {
-          text: `For a list of admin-only commands, type "${prefix}commands admin". For more info about a specific commands, type "${prefix}command (command name)".`,
+          text: `For a list of staff commands, type "${prefix}commands admin". For more info about a specific commands, type "${prefix}command (command name)".`,
           icon_url: 'https://www.kasandbox.org/third_party/javascript-khansrc/live-editor/build/images/avatars/questionmark.png',
         },
       });
@@ -37,7 +37,7 @@ module.exports = {
         description: helpStr,
         color: SECONDARY_COLOR,
         footer: {
-          text: `For a list of general commands, type "${prefix}commands admin". For more info about a specific commands, type "${prefix}command (command name)".`,
+          text: `For more info about a specific commands, type "${prefix}command (command name)".`,
           icon_url: 'https://www.kasandbox.org/third_party/javascript-khansrc/live-editor/build/images/avatars/questionmark.png',
         },
       });

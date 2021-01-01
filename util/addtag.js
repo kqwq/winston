@@ -1,4 +1,3 @@
-const { MessageEmbed } = require("discord.js");
 const { KACC_GUILD_ID, PRIMARY_COLOR, SECONDARY_COLOR } = require('../kacc_constants.json');
 
 module.exports = {
@@ -8,7 +7,7 @@ module.exports = {
     let embed = new MessageEmbed({
       title: `${msg.author.username}#${msg.author.discriminator}`,
       description: msg.content,
-      color: SECONDARY_COLOR,
+      color: PRIMARY_COLOR,
       timestamp: msg.createdTimestamp
     });
     let guild = client.guilds.cache.find(guild => guild.id == KACC_GUILD_ID);
