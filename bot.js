@@ -3,7 +3,7 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const { prefix, token, owner } = require("./config.json");
 const { BOT_STATUS } = require("./kacc_constants.json");
-
+const modmail = require("./util/modmail.js")
 
 // Setup
 const client = new Discord.Client();
@@ -35,9 +35,15 @@ client.on("ready", () => {
 });
 
 client.on("message", (message) => {
+  // For Modmail
+  if (message.channel.type === "dm") {
+    modmail.execute(client, message);
+    return;
+  }
+  
   // Command / args handling
   if (!message.content.startsWith(prefix) || message.author.bot) return;
-  if (message.channel.type !== "text") return; // Bot does NOT support DMs
+  if (message.channel.type !== "text") return;// Does not apply to special channel types like voice or news
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
   const command =
