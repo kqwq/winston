@@ -2,48 +2,24 @@
 const fs = require("fs");
 const Discord = require("discord.js");
 const { prefix, token, owner } = require("./config.json");
-const { BOT_STATUS } = require("./kacc_constants.json");
+const { BOT_STATUS, UNVERIFIED_CHANNEL_ID, WELCOME_MESSAGE } = require("./kacc_constants.json");
 const modmail = require("./util/modmail.js");
-const Sequelize = require('sequelize');
-
 
 // Setup
 const client = new Discord.Client();
 
 // File setup
 if (!fs.existsSync("./storage")) fs.mkdirSync("./storage");
-/*if (!fs.existsSync("./storage/members.json")) {
+if (!fs.existsSync("./storage/hot100")) fs.mkdirSync("./storage/hot100");
+if (!fs.existsSync("./storage/verified_users.json")) {
   fs.writeFileSync(
-    "./storage/members.json",
-    JSON.stringify({ projects: [], easyNum: 100 }),
+    "./storage/verified_users.json",
+    JSON.stringify({ banned:[], verified:[] }),
     "utf8"
   );
-}*/
+}
 
-// SQL setup
-const sequelize = new Sequelize('database', 'user', 'password', {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	// SQLite only
-	storage: './storage/database.sqlite',
-});
-const Tags = sequelize.define('tags', {
-	discordid: {
-		type: Sequelize.STRING,
-		unique: true,
-  },
-  kaid: {
-		type: Sequelize.STRING,
-		unique: true,
-	},
-	date_verified: Sequelize.DATE,
-	tracking_id: {
-		type: Sequelize.INTEGER,
-		defaultValue: 0,
-		allowNull: false,
-	},
-});
+
 
 // Command/cooldown setup
 client.commands = new Discord.Collection();
@@ -57,20 +33,52 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 client.on("ready", () => {
-  Tags.sync();
   client.user.setActivity(BOT_STATUS);
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
+client.on('guildMemberAdd', member => {
+  let role = member.guild.roles.cache.find(role => role.name === 'Unverified');
+  member.roles.add(role).catch(e => console.log(e));
+  let channel = member.guild.channels.cache.find(ch => ch.name == 'unverified');
+  channel.send(`<@${member.id}>\n${WELCOME_MESSAGE}`);
+
+
+
+  //
+  /*console.log(UNVERIFIED_CHANNEL_ID);
+  let channel = client.channels.cache.get(UNVERIFIED_CHANNEL_ID);
+  console.log(channel);
+  console.log("cheese", member);*/
+  //.catch(console.error);
+   // .then(chan => chan// Welcome message
+   // );
+  ////member.roles.add(role).catch(e => console.log(e));
+  
+});
+
 client.on("message", (message) => {
+  if (message.author.bot) return;
+
   // For Modmail
   if (message.channel.type === "dm") {
     modmail.execute(client, message);
     return;
   }
+
+  // Auto-verification
+  if (message.channel.id == UNVERIFIED_CHANNEL_ID) {
+    if (message.member.roles.cache.find(r => r.name === "Unverified")) {
+      let found = message.content.match(/(khanacademy.org\/profile\/[^ ]+)/g);
+      if (found) {
+        let profileURL = found[0];
+        client.commands.get('setprofile').execute(message, profileURL, message.author.id);// Verify user
+      }
+    }
+  }
   
   // Command / args handling
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
+  if (!message.content.startsWith(prefix)) return;
   if (message.channel.type !== "text") return;// Does not apply to special channel types like voice or news
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();

@@ -1,6 +1,7 @@
 const { prefix } = require('../config.json');
 const fetch = require("node-fetch");
 const kauserCard = require("../util/kauser_card.js");
+const kaprojectCard = require("../util/kaproject_card.js");
 
 module.exports = {
   name: "lookup",
@@ -35,7 +36,11 @@ module.exports = {
           msg.channel.send("Invalid input... did you mean `" + prefix + "lookup kaid_" + arg + "`?");
           return;
         } else {
-          // kaid
+          fetch(
+            `https://www.khanacademy.org/api/internal/scratchpads/${arg}`, { headers: {}, method: "GET", mode: "cors" })
+            .then(r => r.json())
+            .then(d => kaprojectCard.execute(msg, d))
+            .catch(err => console.log(err));          
         }
       }
 

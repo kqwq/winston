@@ -8,7 +8,7 @@ module.exports = {
     execute(msg, args) {
         desc = `*Navigation*
 [Hotlist](https://www.khanacademy.org/browse)
-[Project evaluations](https://www.khanacademy.org/cs/projectfeedback#projecteval)
+[Help requests](https://www.khanacademy.org/cs/projectfeedback)
 [Contests homepage](https://www.khanacademy.org/cs/-/5745407636209664)
 
 *Tools*

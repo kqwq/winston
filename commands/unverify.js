@@ -3,7 +3,7 @@ module.exports = {
   cooldown: 1,
   description: "Manually verifies a user",
   ownerOnly: "admin",
-  usage: '[user] {profile link}',
+  usage: '[user]',
   args: true,
   execute(msg, args) {
     if (msg.mentions.members.size < 1) {
