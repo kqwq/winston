@@ -30,7 +30,7 @@ module.exports = {
   name: "setprofile",
   cooldown: 1,
   description: "Sets profile of user",
-  aliases: ['set', 'set_profile'],
+  aliases: ['set_profile'],
   usage: '[profile link]',
   args: true,
   execute(msg, args, overrideUserId) {
@@ -42,6 +42,10 @@ module.exports = {
       arg = args[0];
     } else {
       arg = args;
+    }
+
+    if (arg.includes("https://")) {
+      arg = arg.replace("https://", "");// Strip https:// part
     }
     if (arg.includes("/")) {// khanacademy.org/profile/squishypill/projects becomes squishypill
       arg = arg.split("/")[2];

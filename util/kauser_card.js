@@ -8,7 +8,7 @@ module.exports = {
     let d = apiData;
     let embed = new MessageEmbed({
       title: d.nickname,
-      description: `@${d.username} - ${d.bio}`,
+      description: `[@${d.username}](https://www.khanacademy.org/profile/${d.username}) - ${d.bio}`,
       color: KAUSER_COLOR,
       fields: [
         {

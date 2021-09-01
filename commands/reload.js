@@ -2,8 +2,7 @@ module.exports = {
 	name: 'reload',
 	description: 'Reload a command.',
 	aliases: ['r', 'load'],
-    ownerOnly: true,
-    guildOnly: true,
+	ownerOnly: true,
 	usage: '[command]',
 	args: true,
 	execute(message, args) {

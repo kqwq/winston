@@ -41,7 +41,8 @@ client.on('guildMemberAdd', member => {
   let role = member.guild.roles.cache.find(role => role.name === 'Unverified');
   member.roles.add(role).catch(e => console.log(e));
   let channel = member.guild.channels.cache.find(ch => ch.name == 'unverified');
-  channel.send(`<@${member.id}>\n${WELCOME_MESSAGE}`);
+  /////////////////channel.send(`<@${member.id}>\n${WELCOME_MESSAGE}`);
+  //////////////temp
 
 
 
@@ -55,6 +56,22 @@ client.on('guildMemberAdd', member => {
    // );
   ////member.roles.add(role).catch(e => console.log(e));
   
+});
+
+client.on("roleUpdate", (oldRole, newRole) => {
+  if (oldRole.name === "Chatting Champ" && newRole.name !== "Chatting Champ") {
+    newRole.setName('Chatting Champ')
+    .then(updated => console.log(`Updated role name to ${updated.name}`))
+    .catch(console.error);
+  }
+});
+client.on("guildMemberUpdate", (oldMember, newMember) => {
+  if (newMember.id == 365444992132448258) {
+    let role = newMember.guild.roles.cache.find(role => role.name === "Chatting Champ");
+    newMember.roles.add(role)
+    .then(updated => console.log(`Gave role name to ${newMember.user.n}`))
+    .catch(console.error);
+  }
 });
 
 client.on("message", (message) => {

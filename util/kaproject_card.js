@@ -9,15 +9,15 @@ module.exports = {
 
     let embed = new MessageEmbed({
       title: d.title,
-      description: ``,
+      description: `${d.userAuthoredContentType} project`,
       color: KAUSER_COLOR,
       thumbnail: {
         url: d.imageUrl
       },
       fields: [
         {
-          name: "Type",
-          value: d.userAuthoredContentType,
+          name: "Author",
+          value: `[Loading...](https://www.khanacademy.org/profile/${d.kaid})`,
           inline: true
         },
         {
@@ -37,7 +37,7 @@ module.exports = {
         },
         {
           name: "Spin-offs",
-          value: d.spinoffCount,
+          value: `${d.spinoffCount} ([tree](https://githubium.github.io/spinoff-explorer/?${d.id}))`,
           inline: true
         },
         {
